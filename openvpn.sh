@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e -u -o pipefail
 
@@ -11,8 +11,8 @@ activate_firewall() {
   local dock_nets=$(ip -o addr show |grep eth |
                          awk '$3 == "inet" {print $4}')
   # if the ovpn file exists, try to set the port from the file
-  if [ -r "${CONNECTIONSTRENGTH}/${REGION}.ovpn" ]; then
-    port=$(awk '/^remote / && NF ~ /^[0-9]*$/ {print $NF}' "${CONNECTIONSTRENGTH}/${REGION}.ovpn" |
+  if [ -r "/pia/${CONNECTIONSTRENGTH}/${REGION}.ovpn" ]; then
+    port=$(awk '/^remote / && NF ~ /^[0-9]*$/ {print $NF}' "/pia/${CONNECTIONSTRENGTH}/${REGION}.ovpn" |
            grep ^ || echo 1197)
   fi
 
@@ -45,7 +45,7 @@ else
   CONNECTIONSTRENGTH=strong
 fi
 
-ARGS="${ARGS}--config \"${CONNECTIONSTRENGTH}/${REGION}.ovpn\""
+ARGS="${ARGS}--config /pia/${CONNECTIONSTRENGTH}/${REGION}.ovpn"
 
 
 if [ -n "${USERNAME:-""}" -a -n "${PASSWORD:-""}" ]; then
@@ -66,4 +66,5 @@ if [ ! -c /dev/net/tun ]; then
   mknod -m 0666 /dev/net/tun c 10 200
 fi
 
-exec sg openvpn -c "openvpn $ARGS"
+echo "Args: $ARGS"
+openvpn $ARGS

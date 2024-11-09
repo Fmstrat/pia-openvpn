@@ -19,7 +19,7 @@ while [ true ]; do
                                         pkill -15 openvpn
                                 fi
                                 sleep 10
-                                exec sg vpn -c "openvpn $ARGS" &
+                                openvpn $ARGS &
                         fi
                 fi
         fi
