@@ -16,10 +16,10 @@ The goal is to start this container first then run other container within the PI
 ```Shell
 docker run --cap-add=NET_ADMIN --device=/dev/net/tun --name=pia -d \
   --dns 209.222.18.222 --dns 209.222.18.218 \
-  -e 'REGION=US East' \
+  -e 'REGION=us_east' \
   -e 'USERNAME=pia_username' \
   -e 'PASSWORD=pia_password' \
-  colinhebert/pia-openvpn
+  nowsci/pia-openvpn
 ```
 
 Due to the nature of the VPN client, this container must be started with some additional privileges, `--cap-add=NET_ADMIN` and `--device=/dev/net/tun` make sure that the tunnel can be created from within the container.
@@ -43,7 +43,7 @@ Every parameter provided to the `docker run` command is directly passed as an ar
 This will run the openvpn client with the `--pull` option:
 ```Shell
 docker run ... --name=pia \
-  colinhebert/pia-openvpn \
+  nowsci/pia-openvpn \
     --pull
 ```
 
@@ -53,9 +53,9 @@ By default this image relies on the variables `USERNAME` and `PASSWORD` to be se
 It is possible to use instead a pre-existing volume/file containing the credentials.
 ```Shell
 docker run ... --name=pia \
-  -e 'REGION=US East' \
+  -e 'REGION=us_east' \
   -v 'auth.conf:auth.conf' \
-  colinhebert/pia-openvpn \
+  nowsci/pia-openvpn \
     --auth-user-pass auth.conf
 ```
 
@@ -75,7 +75,7 @@ This creates a network called `pia_network` in which containers can address each
 
 ### Start the PIA container in the pia_network
 ```Shell
-docker run ... --net=pia_network --name=pia colinhebert/pia-openvpn
+docker run ... --net=pia_network --name=pia nowsci/pia-openvpn
 ```
 
 In `pia_network` there is now a resolvable name `pia` that points to that newly created container.
