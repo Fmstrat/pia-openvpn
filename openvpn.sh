@@ -25,8 +25,8 @@ activate_firewall() {
     iptables -A OUTPUT -d ${dock_net} -j ACCEPT
   done
   iptables -A OUTPUT -p udp -m udp --dport 53 -j ACCEPT
-  iptables -A OUTPUT -p tcp -m owner --gid-owner vpn -j ACCEPT 2>/dev/null &&
-  iptables -A OUTPUT -p udp -m owner --gid-owner vpn -j ACCEPT || {
+  iptables -A OUTPUT -p tcp -m owner --gid-owner openvpn -j ACCEPT 2>/dev/null &&
+  iptables -A OUTPUT -p udp -m owner --gid-owner openvpn -j ACCEPT || {
     iptables -A OUTPUT -p tcp -m tcp --dport $port -j ACCEPT
     iptables -A OUTPUT -p udp -m udp --dport $port -j ACCEPT;
   }
@@ -66,4 +66,4 @@ if [ ! -c /dev/net/tun ]; then
   mknod -m 0666 /dev/net/tun c 10 200
 fi
 
-exec sg vpn -c "openvpn $ARGS"
+exec sg openvpn -c "openvpn $ARGS"
