@@ -2,7 +2,7 @@
 
 /usr/local/bin/openvpn.sh &
 sleep 30
-ARGS=$(ps -ef |grep openvpn |grep -v grep |sed 's/.*openvpn //' |head -n1)
+ARGS=$(ps -ef |grep openvpn |grep -Ev "grep|openvpn\.sh" |sed 's/.*openvpn //' |head -n1)
 
 while [ true ]; do
         ping -c1 1.1.1.1 > /dev/null
